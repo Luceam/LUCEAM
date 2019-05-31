@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+<b><p style=" color:RGB(255, 89, 71);">우선순위큐</p></b>
+<pre >
+#include < stdio.h >
+#include < stdlib.h >
+
+
+typedef struct HeapTree { //힙 트리를 배열로 구성
+    int heap[200]; //0번 첨자는 비사용, 최대 199개 노드 저장
+    int heap_size;
+};
+
+//삽입 함수
+void insert_min_heap(HeapTree *H,int item)
+{
+    int i=H->heap_size++ +1; //삽입될 값의 배열첨자
+    while (i!=1 && item < H->heap[i/2])
+    {
+        H->heap[i] = H->heap[i/2];
+        i=i/2;
+    }
+    H->heap[i]=item;
+
+}
+
+int delete_min_heap(HeapTree *H)
+{
+    int item, temp, c=2, p=1;
+    item=H->heap[1]; temp=H->heap[(H->heap_size)--];
+    H->heap[1]=temp;
+    while( c <=H->heap_size )
+    {
+        if((c<H->heap_size) && H->heap[c] > H->heap[c+1])
+            c++;
+        if(temp < H->heap[c]) break;
+        H->heap[p]=H->heap[c];
+        p=c; c*=2;
+    }
+    H->heap[p]=temp;
+    return item;
+
+}
+
+
+void main()
+{
+    int item;
+    HeapTree *H=(HeapTree*)malloc(sizeof(HeapTree));
+    H->heap_size=0; //초기화
+
+    insert_min_heap(H,7);
+    insert_min_heap(H,2);
+    insert_min_heap(H,5);
+    insert_min_heap(H,9);
+    insert_min_heap(H,3);
+    insert_min_heap(H,10);
+
+    for(int i=H->heap_size;i>=1;i--)
+        printf("%d ->", delete_min_heap(H));
+    
+
+}
+</pre>
+
+
+</body>
+</html>
